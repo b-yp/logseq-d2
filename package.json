@@ -1,0 +1,24 @@
+{
+  "name": "logseq-d2",
+  "version": "0.0.1",
+  "description": "Logseq d2 plugin",
+  "main": "dist/index.html",
+  "author": "b-yp",
+  "license": "MIT",
+  "targets": {
+    "main": false
+  },
+  "default": "dist/index.html",
+  "scripts": {
+    "dev": "parcel ./index.html --public-url ./",
+    "build": "parcel build --public-url . --no-source-maps index.html"
+  },
+  "devDependencies": {
+    "@logseq/libs": "^0.0.14",
+    "parcel": "^2.0.0"
+  },
+  "logseq": {
+    "id": "logseq-juzi-qwer",
+    "icon": "./logo.png"
+  }
+}
