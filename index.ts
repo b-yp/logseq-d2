@@ -1,12 +1,14 @@
 import '@logseq/libs'
 
+import { genRandomStr } from './utils'
+
 /**
  * main entry
  */
 async function main() {
   logseq.Editor.registerSlashCommand('d2', async () => {
 
-    await logseq.Editor.insertAtEditingCursor(`{{renderer :d2_render}}`)
+    await logseq.Editor.insertAtEditingCursor(`{{renderer :d2_lang_${genRandomStr()}}}`)
 
     const currentBlock = await logseq.Editor.getCurrentBlock()
 
@@ -36,14 +38,21 @@ async function main() {
   logseq.App.onMacroRendererSlotted(async ({ slot, payload }) => {
 
     const [type] = payload.arguments
-    if (type !== ':d2_render') {
+    if (!type?.startsWith(':d2_lang')) {
       return
     }
 
-    // TODO: 如果只是块折叠，直接 return
+    const currentBlock = await logseq.Editor.getCurrentBlock()
+    const currentBlockDetail = currentBlock?.uuid
+      ? await logseq.Editor.getBlock(currentBlock?.uuid, { includeChildren: true })
+      : undefined
+    const currentContent = currentBlockDetail
+      ? currentBlockDetail?.children?.[0]?.content
+      : undefined
+
+    const d2Id = `d2_${payload.uuid}`
 
     const blockDetail = await logseq.Editor.getBlock(payload.uuid, { includeChildren: true })
-    console.log('blockDetail', blockDetail)
     const content = blockDetail?.children?.[0]?.content
     const contentUuid = blockDetail?.children?.[0]?.uuid
 
@@ -51,18 +60,28 @@ async function main() {
       return
     }
 
-    const d2Data = content.slice(6, -4)
+    // 如何内容没有变化（比如块折叠），直接 return
+    // TODO: 导致第一次也不会渲染了，先注释
+    // if (currentContent === content) {
+    //   return
+    // }
+
+    const d2Data = (content.includes('```d2') || content.includes('```D2')) ? content.slice(6, -4) : undefined
 
     logseq.provideUI({
-      key: 'd2',
+      key: d2Id,
       slot,
-      template: `加载中...`,
+      template: d2Data ? `加载中...` : `<span style="color: #f00;">您输入的不是 d2 代码，请检查后再试!<span>`,
     })
+
+    if (!d2Data) {
+      return
+    }
 
     /**
      * 当开始加载图标的时候折叠代码块
      * 为什么不能在接口请求完成之后折叠
-     * 因为折叠也会触发加载
+     * 因为折叠也会触发重新渲染，导致折叠永远打不开
      */
     // logseq.Editor.setBlockCollapsed(payload.uuid, true)
 
@@ -83,14 +102,17 @@ async function main() {
           return
         }
 
-        console.log('uuid', contentUuid)
         logseq.Editor.editBlock(contentUuid)
         // logseq.Editor.setBlockCollapsed(payload.uuid, false)
       }
     })
 
+    /**
+     * data-* 这种方式设置的属性，可以在 logseq.provideModel 的 edit 函数中拿到对应的值
+     * e.dataset.*
+     */
     logseq.provideUI({
-      key: 'd2',
+      key: d2Id,
       slot,
       template: `
         <div class="d2-wrapper">
