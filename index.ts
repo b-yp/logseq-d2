@@ -85,16 +85,28 @@ async function main() {
      */
     // logseq.Editor.setBlockCollapsed(payload.uuid, true)
 
-    // TODO: 后期优化，当两次请求数据相同时不重新加载
-    const response = await fetch('https://d2api.fly.dev/getSvg', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8;'
-      },
-      body: JSON.stringify({ diagramCode: d2Data }),
-    })
 
-    const svgCode = await response.text()
+    let svgCode = ''
+    // 增加接口缓存，避免重复请求
+    const cacheKey = JSON.stringify({ diagramCode: d2Data })
+    const cacheSvg = sessionStorage.getItem(cacheKey)
+    if (cacheSvg) {
+      svgCode = cacheSvg
+    } else {
+      const response = await fetch('https://d2api.fly.dev/getSvg', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8;',
+          'Cache-Control': 'max-age=3600',
+        },
+        body: cacheKey,
+      })
+
+      // TODO: 接口请求失败处理
+
+      svgCode = await response.text()
+      sessionStorage.setItem(cacheKey, svgCode)
+    }
 
     logseq.provideModel({
       edit(e) {
