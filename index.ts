@@ -97,12 +97,8 @@ async function main() {
     const svgCode = await response.text()
 
     logseq.provideModel({
-      edit() {
-        if (!contentUuid) {
-          return
-        }
-
-        logseq.Editor.editBlock(contentUuid)
+      edit(e) {
+        logseq.Editor.editBlock(e.dataset.target)
         // logseq.Editor.setBlockCollapsed(payload.uuid, false)
       }
     })
@@ -118,6 +114,7 @@ async function main() {
         <div class="d2-wrapper">
           <button
             class="edit-button"
+            data-target="${contentUuid}"
             data-on-click="edit"
           >编辑</button>
           ${svgCode}
