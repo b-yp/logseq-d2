@@ -36,8 +36,7 @@ async function main() {
   `)
 
   logseq.App.onMacroRendererSlotted(async ({ slot, payload }) => {
-
-    const [type] = payload.arguments
+    const [type, width, height] = payload.arguments
     if (!type?.startsWith(':d2_lang')) {
       return
     }
@@ -115,6 +114,19 @@ async function main() {
       }
     })
 
+    let modifiedsvgstring = svgCode
+
+    const parser = new DOMParser();
+    const svgDOM = parser.parseFromString(svgCode, 'image/svg+xml').querySelector('svg');
+
+    if (svgDOM && (width || height)) {
+      svgDOM.setAttribute('width', width);
+      svgDOM.setAttribute('height', height);
+
+      const serializer = new XMLSerializer();
+      modifiedsvgstring = serializer.serializeToString(svgDOM);
+    }
+
     /**
      * data-* 这种方式设置的属性，可以在 logseq.provideModel 的 edit 函数中拿到对应的值
      * e.dataset.*
@@ -129,7 +141,7 @@ async function main() {
             data-target="${contentUuid}"
             data-on-click="edit"
           >编辑</button>
-          ${svgCode}
+          ${modifiedsvgstring}
         </div>
       `,
     })
