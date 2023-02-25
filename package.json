@@ -11,11 +11,16 @@
   "default": "dist/index.html",
   "scripts": {
     "dev": "parcel ./index.html --public-url ./",
-    "build": "parcel build --public-url . --no-source-maps index.html"
+    "build": "parcel build --public-url . --no-source-maps index.html",
+    "semantic-release": "semantic-release"
   },
   "devDependencies": {
     "@logseq/libs": "^0.0.14",
-    "parcel": "^2.0.0"
+    "@semantic-release/changelog": "^6.0.2",
+    "@semantic-release/exec": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "parcel": "^2.0.0",
+    "semantic-release": "^20.1.0"
   },
   "logseq": {
     "id": "b-yp-logseq-d2",
