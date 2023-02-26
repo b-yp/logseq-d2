@@ -17,6 +17,7 @@
   "devDependencies": {
     "@logseq/libs": "^0.0.14",
     "@semantic-release/changelog": "^6.0.2",
+    "@semantic-release/commit-analyzer": "^9.0.2",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^8.0.7",
@@ -26,6 +27,5 @@
   "logseq": {
     "id": "b-yp-logseq-d2",
     "icon": "./logo.png"
-  },
-  "url": "https://github.com/b-yp/logseq-d2.git"
+  }
 }
