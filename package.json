@@ -1,6 +1,6 @@
 {
   "name": "logseq-d2",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Logseq d2 plugin",
   "main": "dist/index.html",
   "author": "b-yp",
