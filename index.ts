@@ -42,12 +42,14 @@ async function main() {
     }
 
     const currentBlock = await logseq.Editor.getCurrentBlock()
-    const currentBlockDetail = currentBlock?.uuid
-      ? await logseq.Editor.getBlock(currentBlock?.uuid, { includeChildren: true })
-      : undefined
-    const currentContent = currentBlockDetail
-      ? currentBlockDetail?.children?.[0]?.content
-      : undefined
+    
+    // 用来判断内容是否有变化的，结果导致 build 出来的代码报错，先注释
+    // const currentBlockDetail = currentBlock?.uuid
+    //   ? await logseq.Editor.getBlock(currentBlock?.uuid, { includeChildren: true })
+    //   : undefined
+    // const currentContent = currentBlockDetail
+    //   ? currentBlockDetail?.children?.[0]?.content
+    //   : undefined
 
     const d2Id = `d2_${payload.uuid}`
 
