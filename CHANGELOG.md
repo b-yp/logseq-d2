@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/b-yp/logseq-d2/compare/v1.0.0...v1.0.1) (2023-02-26)
+
+
+### Bug Fixes
+
+* 修复 build 出来的代码报错 ([cc4f885](https://github.com/b-yp/logseq-d2/commit/cc4f8853a81480503e0f93fa99b17a45babba4a5))
+
 # 1.0.0 (2023-02-26)
 
 
