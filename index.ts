@@ -42,7 +42,7 @@ async function main() {
     }
 
     const currentBlock = await logseq.Editor.getCurrentBlock()
-    
+
     // 用来判断内容是否有变化的，结果导致 build 出来的代码报错，先注释
     // const currentBlockDetail = currentBlock?.uuid
     //   ? await logseq.Editor.getBlock(currentBlock?.uuid, { includeChildren: true })
@@ -86,7 +86,6 @@ async function main() {
      */
     // logseq.Editor.setBlockCollapsed(payload.uuid, true)
 
-
     let svgCode = ''
     // 增加接口缓存，避免重复请求
     const cacheKey = JSON.stringify({ diagramCode: d2Data })
@@ -94,12 +93,13 @@ async function main() {
     if (cacheSvg) {
       svgCode = cacheSvg
     } else {
-      const response = await fetch('https://d2api.fly.dev/getSvg', {
+      const response = await fetch('https://d2-api.fly.dev/getSvg', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json;charset=utf-8;',
           'Cache-Control': 'max-age=3600',
         },
+        mode: 'cors',
         body: cacheKey,
       })
 
@@ -116,7 +116,7 @@ async function main() {
       }
     })
 
-    let modifiedsvgstring = svgCode
+    let modifiedSvgString = svgCode
 
     const parser = new DOMParser();
     const svgDOM = parser.parseFromString(svgCode, 'image/svg+xml').querySelector('svg');
@@ -126,7 +126,7 @@ async function main() {
       svgDOM.setAttribute('height', height);
 
       const serializer = new XMLSerializer();
-      modifiedsvgstring = serializer.serializeToString(svgDOM);
+      modifiedSvgString = serializer.serializeToString(svgDOM);
     }
 
     /**
@@ -143,7 +143,7 @@ async function main() {
             data-target="${contentUuid}"
             data-on-click="edit"
           >编辑</button>
-          ${modifiedsvgstring}
+          ${modifiedSvgString}
         </div>
       `,
     })
