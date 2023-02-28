@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/b-yp/logseq-d2/compare/v1.0.1...v1.1.0) (2023-02-28)
+
+
+### Features
+
+* 替换接口以支持跨域请求 ([0921bba](https://github.com/b-yp/logseq-d2/commit/0921bbad2dbc45968cc89a964a1e3ea4594dd6c1))
+
 ## [1.0.1](https://github.com/b-yp/logseq-d2/compare/v1.0.0...v1.0.1) (2023-02-26)
 
 
