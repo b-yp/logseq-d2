@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/b-yp/logseq-d2/compare/v1.1.0...v1.2.0) (2023-03-02)
+
+
+### Features
+
+* 使用新的交互方式 ([bd3f2b5](https://github.com/b-yp/logseq-d2/commit/bd3f2b554d4861b29515cd82ff41bdceb6268be4))
+
 # [1.1.0](https://github.com/b-yp/logseq-d2/compare/v1.0.1...v1.1.0) (2023-02-28)
 
 
