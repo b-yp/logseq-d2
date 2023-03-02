@@ -12,7 +12,3 @@
     - `{{renderer :d2_lang_gkkbq, 100, 200}}`
 
 > See [d2](https://d2lang.com/) for more syntax
-
-### Thanks
-
-- Thank you for your interface @[YashBhalodi](https://github.com/YashBhalodi)

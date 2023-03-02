@@ -1,6 +1,6 @@
 {
   "name": "logseq-d2",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Logseq d2 plugin",
   "main": "dist/index.html",
   "author": "b-yp",
@@ -10,23 +10,33 @@
   },
   "default": "dist/index.html",
   "scripts": {
-    "dev": "parcel ./index.html --public-url ./",
-    "build": "parcel build --public-url . --no-source-maps index.html",
+    "dev": "parcel ./src/index.html --public-url ./",
+    "build": "parcel build --public-url . --no-source-maps ./src/index.html",
     "semantic-release": "semantic-release"
   },
   "devDependencies": {
-    "@logseq/libs": "^0.0.14",
     "@semantic-release/changelog": "^6.0.2",
     "@semantic-release/commit-analyzer": "^9.0.2",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^8.0.7",
     "conventional-changelog-conventionalcommits": "^5.0.0",
-    "parcel": "^2.0.0",
+    "parcel": "^2.8.3",
     "semantic-release": "^20.1.0"
   },
   "logseq": {
     "id": "b-yp-logseq-d2",
     "icon": "./logo.png"
+  },
+  "dependencies": {
+    "@logseq/libs": "^0.0.14",
+    "react": "^18.2.0"
+  },
+  "alias": {
+    "react/jsx-dev-runtime": "./node_modules/react/jsx-dev-runtime.js",
+    "react/jsx-runtime": "./node_modules/react/jsx-runtime.js",
+    "react": "./src/React.ts",
+    "react-dom": "./src/ReactDOM.ts",
+    "process": false
   }
 }
