@@ -30,7 +30,5 @@ export default function (props: { content: string }) {
     sessionStorage.setItem(cacheKey, svgCode)
   }
 
-  return <div>
-    {svgCode}
-  </div>
+  return <div dangerouslySetInnerHTML={{ __html: svgCode }} />
 }
