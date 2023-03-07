@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/b-yp/logseq-d2/compare/v1.2.1...v1.2.2) (2023-03-07)
+
+
+### Bug Fixes
+
+* 修复不显示 svg ([b3e4e4a](https://github.com/b-yp/logseq-d2/commit/b3e4e4ac27b963992d54450a8f45691738f70a23))
+
 ## [1.2.1](https://github.com/b-yp/logseq-d2/compare/v1.2.0...v1.2.1) (2023-03-07)
 
 
