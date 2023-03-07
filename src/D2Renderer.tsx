@@ -1,12 +1,12 @@
 import React from "react"
 
-export default async function (props: { content: string }) {
+export default function (props: { content: string }) {
   const { content } = props
 
   console.log('content', content)
 
   if (!content) {
-    return `<span style="color: #f00;">No content</span>`
+    return <span style={{ color: '#f00' }}>No content</span>
   }
 
   let svgCode = ''
@@ -16,7 +16,7 @@ export default async function (props: { content: string }) {
   if (cacheSvg) {
     svgCode = cacheSvg
   } else {
-    const response = await fetch('https://d2-api.fly.dev/getSvg', {
+    fetch('https://d2-api.fly.dev/getSvg', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8;',
@@ -24,11 +24,9 @@ export default async function (props: { content: string }) {
       },
       mode: 'cors',
       body: cacheKey,
-    })
-
+    }).then(async response => svgCode = await response.text())
     // TODO: 接口请求失败处理
 
-    svgCode = await response.text()
     sessionStorage.setItem(cacheKey, svgCode)
   }
 
