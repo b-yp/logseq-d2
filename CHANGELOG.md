@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/b-yp/logseq-d2/compare/v1.2.2...v1.2.3) (2023-03-07)
+
+
+### Bug Fixes
+
+* 修复图表📈显示问题 ([3127fee](https://github.com/b-yp/logseq-d2/commit/3127feecec574bd3c1c70dd9fbe33b1721ae6a59))
+
 ## [1.2.2](https://github.com/b-yp/logseq-d2/compare/v1.2.1...v1.2.2) (2023-03-07)
 
 
