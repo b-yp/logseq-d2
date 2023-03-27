@@ -9,10 +9,11 @@
 
 - Use the slash command `/d2` to generate a d2 code block, enter the d2 code, and click other places with the mouse
 - Enter the second and third parameters in the `renderer` to set the width and height, such as the width of 100px and the height of 200px
-    - `{{renderer :d2_lang_gkkbq, 100, 200}}`
+    - ```
+        - {{renderer :d2_lang_gkkbq, 100, 200}}
+          - ```d2
+              A -> B
+            ```
+      ```
 
 > See [d2](https://d2lang.com/) for more syntax
-
-### Thanks
-
-- Thank you for your interface @[YashBhalodi](https://github.com/YashBhalodi)
