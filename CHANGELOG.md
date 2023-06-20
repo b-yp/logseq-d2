@@ -4,6 +4,14 @@
 ### Features
 
 * update logo ([9c12bb5](https://github.com/b-yp/logseq-d2/commit/9c12bb571af140d83e78c806e1ba3eec1203220e))
+* update publish.yml ([a2f9575](https://github.com/b-yp/logseq-d2/commit/a2f9575ffece6605e727cf7f1dcbde86acc2325c))
+
+# [1.2.0](https://github.com/b-yp/logseq-d2/compare/v1.1.0...v1.2.0) (2023-06-20)
+
+
+### Features
+
+* update logo ([9c12bb5](https://github.com/b-yp/logseq-d2/commit/9c12bb571af140d83e78c806e1ba3eec1203220e))
 
 # [1.1.0](https://github.com/b-yp/logseq-d2/compare/v1.0.1...v1.1.0) (2023-03-07)
 
