@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/b-yp/logseq-d2/compare/v1.2.0...v1.2.1) (2023-06-21)
+
+
+### Bug Fixes
+
+* fix release error ([a368715](https://github.com/b-yp/logseq-d2/commit/a3687155f849f61f8f5999af57b7799868b67d29))
+
 # [1.2.0](https://github.com/b-yp/logseq-d2/compare/v1.1.0...v1.2.0) (2023-06-21)
 
 
