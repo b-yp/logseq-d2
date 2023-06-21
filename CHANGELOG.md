@@ -1,3 +1,12 @@
+# [1.2.0](https://github.com/b-yp/logseq-d2/compare/v1.1.0...v1.2.0) (2023-06-21)
+
+
+### Features
+
+* add @semantic-release/npm module ([f92d830](https://github.com/b-yp/logseq-d2/commit/f92d830c03f5248566e5d302ca4bd76fb5971a20))
+* update logo ([9c12bb5](https://github.com/b-yp/logseq-d2/commit/9c12bb571af140d83e78c806e1ba3eec1203220e))
+* update publish.yml ([a2f9575](https://github.com/b-yp/logseq-d2/commit/a2f9575ffece6605e727cf7f1dcbde86acc2325c))
+
 # [1.2.0](https://github.com/b-yp/logseq-d2/compare/v1.1.0...v1.2.0) (2023-06-20)
 
 
