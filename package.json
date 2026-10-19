@@ -6,8 +6,8 @@
   "author": "b-yp",
   "license": "MIT",
   "scripts": {
-    "dev": "esbuild src/index.ts --bundle --outfile=dist/index.js --format=iife --target=es2020 --define:global=globalThis --watch",
-    "build": "esbuild src/index.ts --bundle --outfile=dist/index.js --format=iife --target=es2020 --define:global=globalThis",
+    "dev": "esbuild src/main.ts --bundle --outfile=dist/index.js --format=iife --target=es2020 --define:global=globalThis --watch",
+    "build": "esbuild src/main.ts --bundle --outfile=dist/index.js --format=iife --target=es2020 --define:global=globalThis",
     "typecheck": "tsc --noEmit",
     "semantic-release": "semantic-release"
   },
