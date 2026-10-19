@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/b-yp/logseq-d2/compare/v1.2.1...v1.3.0) (2026-10-19)
+
+
+### Features
+
+* render D2 client-side with official WASM engine ([56999fe](https://github.com/b-yp/logseq-d2/commit/56999fef0abb17f21ff318ea28c0cea44e01f336))
+
 ## [1.2.1](https://github.com/b-yp/logseq-d2/compare/v1.2.0...v1.2.1) (2023-06-21)
 
 
