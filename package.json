@@ -1,30 +1,31 @@
 {
   "name": "logseq-d2",
   "version": "1.2.1",
-  "description": "Logseq d2 plugin",
-  "main": "dist/index.html",
+  "description": "Render D2 diagrams in Logseq, fully client-side via WASM",
+  "main": "index.html",
   "author": "b-yp",
   "license": "MIT",
-  "targets": {
-    "main": false
-  },
-  "default": "dist/index.html",
   "scripts": {
-    "dev": "parcel ./index.html --public-url ./",
-    "build": "parcel build --public-url . --no-source-maps index.html",
+    "dev": "esbuild src/index.ts --bundle --outfile=dist/index.js --format=iife --target=es2020 --define:global=globalThis --watch",
+    "build": "esbuild src/index.ts --bundle --outfile=dist/index.js --format=iife --target=es2020 --define:global=globalThis",
+    "typecheck": "tsc --noEmit",
     "semantic-release": "semantic-release"
   },
+  "dependencies": {
+    "@terrastruct/d2": "^0.1.33"
+  },
   "devDependencies": {
-    "@logseq/libs": "^0.0.14",
+    "@logseq/libs": "^0.0.17",
     "@semantic-release/changelog": "^6.0.2",
     "@semantic-release/commit-analyzer": "^9.0.2",
-    "@semantic-release/exec": "^6.0.3",
+    "@semantic-release/exec": "^6.0.2",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^8.0.7",
     "@semantic-release/npm": "^10.0.4",
     "conventional-changelog-conventionalcommits": "^5.0.0",
-    "parcel": "^2.0.0",
-    "semantic-release": "^20.1.0"
+    "esbuild": "^0.20.0",
+    "semantic-release": "^20.1.0",
+    "typescript": "^5.3.0"
   },
   "logseq": {
     "id": "b-yp-logseq-d2",

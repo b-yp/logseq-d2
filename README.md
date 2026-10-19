@@ -1,18 +1,54 @@
-## Logseq d2 plugin
+# logseq-d2
 
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+A [Logseq](https://logseq.com) plugin that renders [D2](https://d2lang.com) diagrams.
 
-### Demo
-![demo](./demo.gif)
+Rendering happens entirely client-side: the official D2 WASM engine
+([`@terrastruct/d2`](https://www.npmjs.com/package/@terrastruct/d2), the same
+engine behind [play.d2lang.com](https://play.d2lang.com)) is bundled into the
+plugin. **No server, no endpoint/token setup, works offline.**
 
-### Usage
+![demo](demo.gif)
 
-- Use the slash command `/d2` to generate a d2 code block, enter the d2 code, and click other places with the mouse
-- Enter the second and third parameters in the `renderer` to set the width and height, such as the width of 100px and the height of 200px
-    - `{{renderer :d2_lang_gkkbq, 100, 200}}`
+## Usage
 
-> See [d2](https://d2lang.com/) for more syntax
+Write a fenced code block with the `d2` language. The diagram renders
+automatically once you move the cursor away:
 
-### Thanks
+````markdown
+```d2
+server -> database: queries
+database -> cache: invalidates
+```
+````
 
-- Thank you for your interface @[YashBhalodi](https://github.com/YashBhalodi)
+You can also type `/d2` to insert a code block template. Click a rendered
+diagram to edit it.
+
+## Settings
+
+| Setting     | Description                          | Default |
+| ----------- | ------------------------------------ | ------- |
+| Theme       | Color theme for rendered diagrams    | Default |
+| Sketch mode | Render diagrams in hand-drawn style  | off     |
+
+The layout engine is fixed to dagre (the browser WASM build does not bundle ELK).
+
+## Development
+
+```sh
+pnpm install
+pnpm dev    # watch mode
+pnpm build  # bundles into dist/
+```
+
+In Logseq: Plugins → Load unpacked plugin → select this directory.
+
+## How it works
+
+Compilation and rendering run inside a Web Worker (keeps the UI responsive).
+Renders are serialized because the WASM worker cannot handle concurrent calls;
+if a render fails, the WASM instance is recreated and the render retried once.
+
+## License
+
+MIT
