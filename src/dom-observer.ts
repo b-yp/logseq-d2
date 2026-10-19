@@ -1,8 +1,16 @@
 import { renderD2, resetD2 } from './d2-engine'
 import { getSettingsKey } from './settings'
 import { D2_STYLES } from './styles'
+import { getTopContext, topLog } from './top-context'
+import {
+  setDebugStarted,
+  setDebugCounts,
+  setDebugRender,
+  installDebugHook,
+} from './debug'
 
 const PREVIEW_CLASS = 'logseq-d2-preview'
+const DEBUG_OVERLAY_ID = 'logseq-d2-debug'
 const CODE_ATTR = 'data-d2-code'
 const SETTINGS_ATTR = 'data-d2-settings'
 const STYLE_ID = 'logseq-d2-dynamic-style'
@@ -13,25 +21,6 @@ const escapeHtml = (s: string) =>
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
-
-function getTopContext(): { doc: Document; win: any } {
-  try {
-    if (typeof window !== 'undefined' && window.top && window.top.document) {
-      return { doc: window.top.document, win: window.top as Window }
-    }
-  } catch {
-    // cross-origin: fall back to the iframe document
-  }
-  return { doc: document, win: window }
-}
-
-function topLog(...args: unknown[]) {
-  try {
-    getTopContext().win.console.log('[logseq-d2]', ...args)
-  } catch {
-    // ignore
-  }
-}
 
 function extractCode(cmEl: HTMLElement): string {
   try {
@@ -57,7 +46,7 @@ function extractCode(cmEl: HTMLElement): string {
  *   1. <textarea data-lang="d2"> inside .code-editor (most reliable)
  *   2. .extensions__code-lang label showing the lower-cased language name
  */
-function isD2Block(blockEl: HTMLElement): boolean {
+export function isD2Block(blockEl: HTMLElement): boolean {
   const textarea = blockEl.querySelector('textarea[data-lang]')
   if (textarea) {
     const lang = (textarea.getAttribute('data-lang') || '').trim().toLowerCase()
@@ -70,6 +59,10 @@ function isD2Block(blockEl: HTMLElement): boolean {
     return (langLabel.textContent || '').trim().toLowerCase() === 'd2'
   }
   return false
+}
+
+function hasCodeMirror(blockEl: HTMLElement): boolean {
+  return blockEl.querySelector('.CodeMirror') !== null
 }
 
 async function renderD2Block(blockEl: HTMLElement): Promise<void> {
@@ -114,6 +107,7 @@ async function renderD2Block(blockEl: HTMLElement): Promise<void> {
       return
     }
     ;(previewEl as HTMLElement).innerHTML = `<div class="logseq-d2-container">${svg}</div>`
+    setDebugRender('ok')
   } catch (err: any) {
     if ((blockEl as any).__d2Token !== token || !blockEl.isConnected) {
       return
@@ -122,6 +116,7 @@ async function renderD2Block(blockEl: HTMLElement): Promise<void> {
     blockEl.removeAttribute(CODE_ATTR)
     const msg = escapeHtml(err?.message || String(err))
     ;(previewEl as HTMLElement).innerHTML = `<div class="logseq-d2-error">D2 render failed: ${msg}</div>`
+    setDebugRender(`ERROR: ${err?.message || String(err)}`.slice(0, 120))
     topLog('render failed:', err?.message || err)
   }
 
@@ -140,7 +135,7 @@ function bindLiveRerender(blockEl: HTMLElement, cmEl: HTMLElement) {
       clearTimeout(timer)
     }
     timer = setTimeout(() => {
-      // Invalidate the cache so the next scan re-renders with fresh code.
+      // Invalidate the cache so the next render uses fresh code.
       blockEl.removeAttribute(CODE_ATTR)
       void renderD2Block(blockEl)
     }, 500)
@@ -158,29 +153,72 @@ function bindLiveRerender(blockEl: HTMLElement, cmEl: HTMLElement) {
 }
 
 export function scanAndRenderAll(root?: ParentNode) {
-  const { doc } = getTopContext()
-  const scope: ParentNode = root || doc
-  const blocks = scope.querySelectorAll(
-    '.extensions__code, .code-editor, [class*="extensions__code"]'
-  )
+  let blocks: NodeListOf<Element>
+  try {
+    const { doc } = getTopContext()
+    const scope: ParentNode = root || doc
+    blocks = scope.querySelectorAll(
+      '.extensions__code, .code-editor, [class*="extensions__code"]'
+    )
+  } catch {
+    setDebugCounts(0, 0)
+    return
+  }
+  let d2count = 0
   blocks.forEach((el) => {
     const blockEl = (el.closest('.extensions__code') || el) as HTMLElement
+    if (hasCodeMirror(blockEl) && isD2Block(blockEl)) {
+      d2count++
+    }
     void renderD2Block(blockEl)
   })
+  setDebugCounts(blocks.length, d2count)
 }
 
 /** Clear render caches so the next scan re-renders everything (e.g. after a settings change). */
 export function refreshAll() {
-  const { doc } = getTopContext()
-  doc.querySelectorAll(`[${CODE_ATTR}]`).forEach((el) => {
-    el.removeAttribute(CODE_ATTR)
-    el.removeAttribute(SETTINGS_ATTR)
-  })
+  try {
+    const { doc } = getTopContext()
+    doc.querySelectorAll(`[${CODE_ATTR}]`).forEach((el) => {
+      el.removeAttribute(CODE_ATTR)
+      el.removeAttribute(SETTINGS_ATTR)
+    })
+  } catch {
+    // ignore
+  }
   scanAndRenderAll()
 }
 
 export function initDomObserver(): () => void {
-  const { doc, win } = getTopContext()
+  let doc: Document
+  let win: any
+  try {
+    ;({ doc, win } = getTopContext())
+  } catch (err: any) {
+    setDebugStarted(false, `top context failed: ${err?.message || err}`)
+    return () => {}
+  }
+
+  const topDocOk = (() => {
+    try {
+      return !!(window.top && window.top.document)
+    } catch {
+      return false
+    }
+  })()
+  setDebugStarted(true, topDocOk ? '' : 'using iframe document (top blocked)')
+
+  if (!doc.body) {
+    setDebugStarted(true, 'waiting for document.body…')
+    doc.addEventListener(
+      'DOMContentLoaded',
+      () => {
+        initDomObserver()
+      },
+      { once: true }
+    )
+    return () => {}
+  }
 
   // 1. Inject styles into the top-level document.
   try {
@@ -196,16 +234,20 @@ export function initDomObserver(): () => void {
   }
 
   resetD2()
+  installDebugHook(isD2Block)
 
   // 2. Initial scan.
   scanAndRenderAll()
 
-  // 3. Watch for DOM changes, ignoring mutations inside our own previews.
+  // 3. Watch for DOM changes, ignoring mutations inside our own preview
+  //    containers and the debug overlay.
   let mutationTimer: ReturnType<typeof setTimeout> | null = null
   const observer = new win.MutationObserver((mutations: MutationRecord[]) => {
     const isSelfChange = mutations.every((m: MutationRecord) => {
       const target = m.target as HTMLElement
-      return target?.closest?.(`.${PREVIEW_CLASS}`) !== null
+      return (
+        target?.closest?.(`.${PREVIEW_CLASS}, #${DEBUG_OVERLAY_ID}`) !== null
+      )
     })
     if (isSelfChange) {
       return

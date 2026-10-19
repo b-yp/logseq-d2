@@ -45,6 +45,13 @@ export const settingsSchema: Array<SettingSchemaDesc> = [
     description: 'Render diagrams in hand-drawn sketch style.',
     default: false,
   },
+  {
+    key: 'debug',
+    type: 'boolean',
+    title: 'Debug overlay',
+    description: 'Show a small status panel in the corner (helps diagnose why diagrams do not render).',
+    default: true,
+  },
 ]
 
 function currentSettings(): D2PluginSettings {

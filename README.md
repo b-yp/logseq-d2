@@ -26,10 +26,11 @@ diagram to edit it.
 
 ## Settings
 
-| Setting     | Description                          | Default |
-| ----------- | ------------------------------------ | ------- |
-| Theme       | Color theme for rendered diagrams    | Default |
-| Sketch mode | Render diagrams in hand-drawn style  | off     |
+| Setting       | Description                          | Default |
+| ------------- | ------------------------------------ | ------- |
+| Theme         | Color theme for rendered diagrams    | Default |
+| Sketch mode   | Render diagrams in hand-drawn style  | off     |
+| Debug overlay | Show a status panel (diagnostics)    | on      |
 
 The layout engine is fixed to dagre (the browser WASM build does not bundle ELK).
 
@@ -60,6 +61,17 @@ change.
 Compilation and rendering run inside a Web Worker (keeps the UI responsive).
 Renders are serialized because the WASM worker cannot handle concurrent calls;
 if a render fails, the WASM instance is recreated and the render retried once.
+
+## Troubleshooting
+
+If diagrams don't render, check the small status panel in the bottom-right
+corner (disable it via the `Debug overlay` setting once everything works).
+It shows whether the plugin loaded, whether the top-level document is
+reachable, how many code blocks were found, and the last render result.
+
+For deeper inspection, open the devtools console of the **main** Logseq window
+and run `__logseq_d2_debug()` — it dumps the code blocks found and their
+language-detection results.
 
 ## License
 
