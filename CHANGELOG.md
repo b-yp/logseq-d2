@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/b-yp/logseq-d2/compare/v1.3.0...v1.4.0) (2026-10-19)
+
+
+### Features
+
+* render via DOM observation for Logseq DB support ([3f3b68b](https://github.com/b-yp/logseq-d2/commit/3f3b68b6a572378d53f411f07d73d17586b1f2e7))
+
 # [1.3.0](https://github.com/b-yp/logseq-d2/compare/v1.2.1...v1.3.0) (2026-10-19)
 
 
