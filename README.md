@@ -45,6 +45,18 @@ In Logseq: Plugins → Load unpacked plugin → select this directory.
 
 ## How it works
 
+Rendering happens entirely client-side: the official D2 WASM engine is bundled
+into the plugin, so there is no server and no network involved.
+
+Instead of `registerFencedCodeRenderer` (which does not fire on the Logseq DB
+version), the plugin observes the top-level Logseq document with a
+`MutationObserver`, finds code blocks tagged as `d2` (via the block's
+`data-lang` attribute), and appends the rendered SVG below the code — the same
+approach as the [logseq-pele](https://github.com/b-yp/logseq-pele) plugin.
+This works on Logseq DB and classic builds alike. Diagrams re-render
+automatically (debounced) while you edit the code, and when plugin settings
+change.
+
 Compilation and rendering run inside a Web Worker (keeps the UI responsive).
 Renders are serialized because the WASM worker cannot handle concurrent calls;
 if a render fails, the WASM instance is recreated and the render retried once.
