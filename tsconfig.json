@@ -1,12 +1,15 @@
 {
   "compilerOptions": {
-    "target": "es2020",
-    "module": "esnext",
+    "target": "ESNext",
+    "module": "ESNext",
     "moduleResolution": "bundler",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noEmit": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "noEmit": true,
     "types": []
   },
   "include": ["src"]

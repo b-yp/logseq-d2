@@ -1,13 +1,13 @@
 {
   "name": "logseq-d2",
-  "version": "1.4.0",
+  "version": "3.0.0",
   "description": "Render D2 diagrams in Logseq, fully client-side via WASM",
   "main": "index.html",
   "author": "b-yp",
   "license": "MIT",
   "scripts": {
-    "dev": "esbuild src/main.ts --bundle --outfile=dist/index.js --format=iife --target=es2020 --define:global=globalThis --watch",
-    "build": "esbuild src/main.ts --bundle --outfile=dist/index.js --format=iife --target=es2020 --define:global=globalThis",
+    "dev": "node scripts/build.mjs --watch",
+    "build": "node scripts/build.mjs",
     "typecheck": "tsc --noEmit",
     "semantic-release": "semantic-release"
   },
@@ -29,6 +29,9 @@
   },
   "logseq": {
     "id": "b-yp-logseq-d2",
-    "icon": "./logo.svg"
+    "title": "D2 Diagram Renderer",
+    "description": "Render D2 diagrams in Logseq, fully client-side via WASM",
+    "icon": "logo.svg",
+    "main": "index.html"
   }
 }
