@@ -21,11 +21,10 @@ function printBuildInfo(): void {
   }
 
   try {
+    // Only the plugin's own iframe is written to. The host page belongs to
+    // Logseq, so its globals are left untouched.
     const meta = { version: BUILD_VERSION, builtAt: BUILD_TIME }
     ;(window as unknown as Record<string, unknown>).__LOGSEQ_D2_BUILD__ = meta
-    if (window.top) {
-      ;(window.top as unknown as Record<string, unknown>).__LOGSEQ_D2_BUILD__ = meta
-    }
   } catch {
     // ignore
   }

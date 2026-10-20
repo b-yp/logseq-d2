@@ -50,7 +50,15 @@ Changing any setting re-renders every diagram on the page. With `Auto`, switchin
 | `src/engine.ts` | Serializes D2 compiles through one WASM worker and caches both SVG and a data-URL image with intrinsic dimensions. |
 | `src/errors.ts` | Formats D2 syntax errors for inline display. |
 | `src/settings.ts` | Maps plugin settings to D2 render options. |
-| `src/styles.ts` | Styles the preview, loading, error states, and the fade-in animation. |
+| `src/styles.ts` | Styles the preview, loading and error states. Every rule is scoped to plugin-owned elements or to native nodes the plugin has marked itself — see the invasiveness contract at the top of the file. |
+
+## Styling scope
+
+The plugin renders inside Logseq's own DOM, so it follows one rule: **extend the defaults, never replace them.**
+
+- Selectors target either the plugin's own elements (`logseq-d2-*`, `d2-seg-*`) or native nodes the plugin has marked itself (`logseq-d2-block`, `logseq-d2-code-actions`, `logseq-d2-fenced`). Those markers are added *and removed* by `src/renderer.ts`.
+- `!important` is reserved for overriding a declaration Logseq already puts on the same native element — the code block's own layout and the view-mode visibility toggles. Plugin-owned elements win by specificity instead.
+- No global resets, no `body` / `html` / `*` rules, and no app-wide scroll-container patching.
 
 ## Development
 

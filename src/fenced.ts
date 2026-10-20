@@ -1,5 +1,11 @@
 import { getCachedHeight, getCachedSvg, renderD2 } from './engine'
 import { describeD2Error } from './errors'
+import {
+  copySvgToClipboard,
+  downloadPngFile,
+  downloadSvgFile,
+} from './export-utils'
+import { ICONS } from './icons'
 import { markBlockHandled } from './renderer'
 import { getSettingsKey, invalidateThemeModeCache } from './settings'
 
@@ -133,12 +139,89 @@ function createD2View(React: HostReact) {
     }
 
     if (renderedSvg) {
-      return React.createElement('div', {
-        className: 'logseq-d2-container',
-        ref: markHandled,
-        style: baseStyle,
-        dangerouslySetInnerHTML: { __html: renderedSvg },
-      })
+      return React.createElement(
+        'div',
+        {
+          className: 'logseq-d2-wrapper',
+          ref: markHandled,
+          style: { overflowAnchor: 'none', position: 'relative' },
+        },
+        React.createElement(
+          'div',
+          { className: 'logseq-d2-actions' },
+          React.createElement(
+            'button',
+            {
+              className: 'logseq-d2-btn logseq-d2-copy-btn',
+              type: 'button',
+              title: 'Copy SVG vector code to clipboard',
+              onClick: (e: any) => {
+                e.stopPropagation()
+                e.preventDefault()
+                const wrapper = (e.currentTarget as HTMLElement).closest('.logseq-d2-wrapper')
+                const svgEl = wrapper?.querySelector<SVGElement>('.logseq-d2-container svg')
+                if (svgEl) {
+                  void copySvgToClipboard(svgEl, e.currentTarget)
+                }
+              },
+            },
+            React.createElement('span', {
+              className: 'd2-btn-icon',
+              dangerouslySetInnerHTML: { __html: ICONS.copy },
+            }),
+            React.createElement('span', { className: 'd2-btn-label' }, 'Copy SVG'),
+          ),
+          React.createElement(
+            'button',
+            {
+              className: 'logseq-d2-btn logseq-d2-svg-btn',
+              type: 'button',
+              title: 'Download as .svg vector file',
+              onClick: (e: any) => {
+                e.stopPropagation()
+                e.preventDefault()
+                const wrapper = (e.currentTarget as HTMLElement).closest('.logseq-d2-wrapper')
+                const svgEl = wrapper?.querySelector<SVGElement>('.logseq-d2-container svg')
+                if (svgEl) {
+                  downloadSvgFile(svgEl, 'd2')
+                }
+              },
+            },
+            React.createElement('span', {
+              className: 'd2-btn-icon',
+              dangerouslySetInnerHTML: { __html: ICONS.download },
+            }),
+            React.createElement('span', { className: 'd2-btn-label' }, 'Download SVG'),
+          ),
+          React.createElement(
+            'button',
+            {
+              className: 'logseq-d2-btn logseq-d2-png-btn',
+              type: 'button',
+              title: 'Download as high-resolution .png image',
+              onClick: (e: any) => {
+                e.stopPropagation()
+                e.preventDefault()
+                const wrapper = (e.currentTarget as HTMLElement).closest('.logseq-d2-wrapper')
+                const svgEl = wrapper?.querySelector<SVGElement>('.logseq-d2-container svg')
+                if (svgEl) {
+                  downloadPngFile(svgEl, 'd2')
+                }
+              },
+            },
+            React.createElement('span', {
+              className: 'd2-btn-icon',
+              dangerouslySetInnerHTML: { __html: ICONS.download },
+            }),
+            React.createElement('span', { className: 'd2-btn-label' }, 'Download PNG'),
+          ),
+        ),
+        React.createElement('div', {
+          className: 'logseq-d2-container',
+          style: baseStyle,
+          dangerouslySetInnerHTML: { __html: renderedSvg },
+        }),
+      )
     }
 
     return React.createElement(

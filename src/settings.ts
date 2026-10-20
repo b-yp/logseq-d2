@@ -32,6 +32,7 @@ export interface D2Settings {
   transparent?: boolean | string
   sketch?: boolean | string
   scale?: number | string
+  defaultViewMode?: 'diagram' | 'both' | 'code'
 }
 
 export interface RenderOptions {
@@ -80,7 +81,27 @@ export const settingsSchema: SettingSchemaDesc[] = [
     default: '1',
     enumChoices: ['0.6', '0.75', '0.9', '1', '1.1', '1.25', '1.5'],
   },
+  {
+    key: 'defaultViewMode',
+    type: 'enum',
+    title: 'Default View Mode',
+    description: 'Initial display mode for D2 code blocks: Diagram (diagram only), Both (code and diagram), or Code (code only).',
+    default: 'diagram',
+    enumChoices: ['diagram', 'both', 'code'],
+  },
 ]
+
+export function getDefaultViewMode(): 'diagram' | 'both' | 'code' {
+  try {
+    const mode = (logseq.settings as D2Settings | undefined)?.defaultViewMode
+    if (mode === 'both' || mode === 'code' || mode === 'diagram') {
+      return mode
+    }
+  } catch {
+    // fallback
+  }
+  return 'diagram'
+}
 
 function parseColorToLuminance(colorStr: string): number | null {
   if (!colorStr) return null
