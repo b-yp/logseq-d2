@@ -1,6 +1,6 @@
 {
   "name": "logseq-d2",
-  "version": "3.0.0",
+  "version": "1.5.0",
   "description": "Render D2 diagrams in Logseq, fully client-side via WASM",
   "main": "index.html",
   "author": "b-yp",

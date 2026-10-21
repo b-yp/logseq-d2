@@ -1,3 +1,11 @@
+# [1.5.0](https://github.com/b-yp/logseq-d2/compare/v1.4.0...v1.5.0) (2026-10-21)
+
+
+### Features
+
+* add view mode switcher and diagram export actions ([694ed1e](https://github.com/b-yp/logseq-d2/commit/694ed1ee8c9aae38b27867b13a11e26884899033))
+* optimize diagram rendering, scroll stability, and dark theme adaptation ([28e64c1](https://github.com/b-yp/logseq-d2/commit/28e64c183140b3bbea4684d4ba8098c3cb403e81))
+
 # [1.4.0](https://github.com/b-yp/logseq-d2/compare/v1.3.0...v1.4.0) (2026-10-19)
 
 
