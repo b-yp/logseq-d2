@@ -2,13 +2,14 @@
 
 A [Logseq](https://logseq.com) plugin that renders [D2](https://d2lang.com) diagrams fully client-side using the official WebAssembly engine.
 
-![demo](demo.gif)
+![demo](demo.png)
 
 ## Features
 
 - **Fully offline** — the D2 WASM engine is bundled. No server, no token.
 - **Native block rendering** — classic builds use Logseq's official fenced-code renderer, so the diagram becomes the block content. The source editor is hidden in preview mode and the virtual list measures the diagram itself.
 - **Live previews** — edits re-render after a short debounce.
+- **View modes** — on the DB/DOM renderer, every D2 block can show the diagram only, the source plus the diagram, or the source only. A three-way switcher sits in the code-block action bar, and the initial mode is configurable in settings (`diagram` / `both` / `code`).
 - **Smooth scrolling** — zero layout shifts and instant diagram recovery. Known diagram dimensions are pre-reserved on remount, eliminating scroll jumps and flickers.
 - **Themes and sketch mode** — 20 built-in D2 themes, sketch style, transparent background, and intelligent Auto themes that match Logseq light/dark mode seamlessly.
 - **Logseq DB and classic** — official renderer on classic builds, an image-based DOM fallback on DB.
@@ -34,11 +35,26 @@ Open **Settings** → **Plugin Settings** → **D2 Diagram Renderer**:
 
 | Setting | Description | Default |
 | :--- | :--- | :--- |
-| **Theme** | Color theme for rendered diagrams. Auto follows Logseq light/dark mode. | `Auto (match Logseq)` |
+| **Light Theme** | Color theme for rendered diagrams. Auto follows Logseq light/dark mode. | `Auto (match Logseq)` |
+| **Dark Theme (for Auto mode)** | Dark theme used when Logseq is in Dark Mode. | `Dark Mauve` |
+| **Transparent Background** | Let the Logseq card show through instead of drawing a canvas behind the diagram. | `true` |
 | **Sketch mode** | Render diagrams in hand-drawn sketch style | `false` |
-| **Diagram size** | Scale the rendered diagram (`0.75`–`1.5`) | `1` |
+| **Diagram size** | Scale the rendered diagram (`0.6`–`1.5`) | `1` |
+| **Default View Mode** | How a D2 block opens: `diagram` (diagram only), `both` (code and diagram), or `code` (code only). A manual switch on a block lasts until the next full re-render. | `diagram` |
 
-Changing any setting re-renders every diagram on the page. With `Auto`, switching Logseq between light and dark also re-renders diagrams. The D2 canvas background is transparent, so the Logseq card provides the surface.
+Changing any setting re-renders every diagram on the page and reapplies the current **Default View Mode**. With `Auto`, switching Logseq between light and dark also re-renders diagrams. The D2 canvas background is transparent, so the Logseq card provides the surface.
+
+### View modes
+
+On the DB/DOM renderer, each D2 code block gets a three-way switcher in its action bar:
+
+| Mode | Code editor | Diagram |
+| :--- | :--- | :--- |
+| **Diagram** | hidden | shown |
+| **Both** | shown | shown |
+| **Code** | shown | hidden |
+
+Pick the initial state globally with **Default View Mode**; the switcher only changes the block you click. The SVG is still rendered in the background in `code` mode, so switching back to `diagram` or `both` is instant.
 
 ## How it works
 
